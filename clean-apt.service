@@ -1,0 +1,10 @@
+[Unit]
+Description=Auto Clean APT Cache
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/user/Germany/ops_practice/clean_apt.py
+
+[Install]
+WantedBy=multi-user.target
