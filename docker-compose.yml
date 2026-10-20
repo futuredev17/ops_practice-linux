@@ -1,0 +1,18 @@
+services:
+  web-server:
+    image: nginx:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./web:/usr/share/nginx/html
+    restart: always
+
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    ports:
+      - "3306:3306"
+    volumes:
+      - /home/user/Germany/ops_practice/db_data:/var/lib/mysql
+    restart: always
