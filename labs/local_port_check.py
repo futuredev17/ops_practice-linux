@@ -10,6 +10,8 @@ Purpose: scan TCP ports on localhost (or an authorized host) to verify
 WARNING: only scan hosts you own or have explicit permission to test.
 """
 
+import json
+import os
 import argparse
 import errno
 import socket
@@ -137,24 +139,33 @@ def check_ufw() -> None:
 
 # ---------------- Main ----------------
 def main() -> int:
+    # --- Added: Read configuration file ---
+    config = {}
+    if os.path.exists("config.json"):
+        try:
+            with open("config.json", "r", encoding="utf-8") as f:
+                config = json.load(f)
+        except Exception as e:
+            print(f"Failed to read config.json: {e}, using default configuration.")
+    # --------------------------------------
     parser = argparse.ArgumentParser(
         description="ghost_protocol.py - Ghost Protocol port scanner",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="examples:\n"
                "  python3 ghost_protocol.py\n"
-              "  python3 ghost_protocol.py -H 192.168.1.10 -p 22,80,443\n"
+               "  python3 ghost_protocol.py -H 192.168.1.10 -p 22,80,443\n"
                "  python3 ghost_protocol.py -p 1-1024 -t 0.5 -j 500\n"
                "  python3 ghost_protocol.py --top --banner\n",
     )
-    parser.add_argument("-H", "--host", default="127.0.0.1",
+    parser.add_argument("-H", "--host", default=config.get("host", "127.0.0.1"),
                         help="target host (default: 127.0.0.1)")
-    parser.add_argument("-p", "--ports", default="22,80",
+    parser.add_argument("-p", "--ports", default=config.get("ports","22,80"),
                         help="port list, e.g. 22,80 or 1-1024 (default: 22,80)")
     parser.add_argument("--top", action="store_true",
                         help="scan TOP common ports (overrides -p)")
-    parser.add_argument("-t", "--timeout", type=float, default=1.0,
+    parser.add_argument("-t", "--timeout", type=float, default=config.get("timeout", 1.0),
                         help="per-port timeout in seconds (default: 1.0)")
-    parser.add_argument("-j", "--jobs", type=int, default=200,
+    parser.add_argument("-j", "--jobs", type=int, default=config.get("jobs", 200),
                         help="concurrent workers (default: 200)")
     parser.add_argument("-b", "--banner", action="store_true",
                         help="attempt banner grabbing (slower)")
@@ -163,8 +174,8 @@ def main() -> int:
     parser.add_argument("--check-ufw", action="store_true",
                         help="try to dump ufw status after the scan")
     parser.add_argument("--save", metavar="FILE",
-                        help="save results to a text report")
-    args = parser.parse_args()
+                        help="save results to a test report")
+    args = par ser.parse_args()
 
     # ---- Resolve target ----
     try:
