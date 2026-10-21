@@ -27,6 +27,7 @@ Hands-on Linux operations practice: system health checks, systemd services and t
 | `script/` | Helper scripts |
 | `backup/`, `log/` | Runtime output (not tracked) |
 | `db_data/` | MySQL data directory (bind mount, not tracked) |
+| `Data_Sentinel/` | Automated backup and restore tool with logging and diff verification |
 
 ## 🚀 Quick Start
 
