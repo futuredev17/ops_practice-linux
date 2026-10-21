@@ -20,6 +20,29 @@ import time
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
+import logging
+
+# Setup logging to both screen and file
+logging.basicConfig(
+    filename='ghost.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+class DualLogger:
+    def __init__(self, original_stdout):
+        self.original_stdout = original_stdout
+    def write(self, message):
+        self.original_stdout.write(message)
+        if message.strip():
+            logging.info(message.strip())
+    def isatty(self):
+        return self.original_stdout.isatty()
+    def flush(self):
+        self.original_stdout.flush()
+
+# Redirect stdout to capture prints
+sys.stdout = DualLogger(sys.stdout)
 
 # ---------------- Terminal colors ----------------
 _TTY = sys.stdout.isatty()
