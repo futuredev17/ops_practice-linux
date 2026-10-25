@@ -30,7 +30,6 @@ Hands-on Linux operations practice: system health checks, systemd services and t
 | `db_data/` | MySQL data directory (bind mount, not tracked) |
 | `Data_Sentinel/` | Automated backup and restore tool with logging and diff verification |
 | `nginx.conf/` | Custom Nginx configuration: upstream load balancing, health checks, and server name routing |
-| `umbrella_app/` | Flutter-based emotional alarm clock app with real-time weather API and custom UI |
 ## 🚀 Quick Start
 
 ### Monitoring scripts
@@ -136,6 +135,11 @@ sudo docker start web1 web2
 # Start Nginx load balancer
 sudo docker run -d --name lb-nginx -p 8080:80 \
   -v /home/user/Germany/ops_practice/nginx.conf:/etc/nginx/nginx.conf:ro nginx
+### 📱 Independent Project: Umbrella (Flutter App)
+A standalone mobile application developed outside this repository to demonstrate full-stack capabilities. 
+- **Tech Stack**: Flutter, Dart, Custom UI (Glassmorphism).
+- **Features**: Emotional alarm clock, real-time weather API integration, custom time/calendar routing.
+- **Architecture**: Frontend connects to local backend APIs for dynamic data.
 
 ## 🚀 Roadmap
 
